@@ -14,8 +14,8 @@ export interface mouseEvent {
     setHoldingPiece: React.Dispatch<React.SetStateAction<string | null>>;
     prevPiece: Array<number>;
     setPrevPiece: React.Dispatch<React.SetStateAction<Array<number>>>;
-    SetSTART?: React.Dispatch<React.SetStateAction<coordinate>>;
-    SetTARGET?: React.Dispatch<React.SetStateAction<coordinate>>;
+    setSTART?: React.Dispatch<React.SetStateAction<coordinate>>;
+    setTARGET?: React.Dispatch<React.SetStateAction<coordinate>>;
 }
 
 function toggleWall(board: IBoard, i: number, j: number): IBoard {
@@ -59,8 +59,8 @@ export function handleMouseDown({
     setHoldingPiece,
     prevPiece,
     setPrevPiece,
-    SetSTART,
-    SetTARGET,
+    setSTART,
+    setTARGET,
 }: mouseEvent): void {
     setMouseDown(true);
     const { isStart, isTarget } = board[i][j];
@@ -83,8 +83,8 @@ export function handleMouseEnter({
     setHoldingPiece,
     prevPiece,
     setPrevPiece,
-    SetSTART,
-    SetTARGET,
+    setSTART,
+    setTARGET,
 }: mouseEvent) {
     if (!mouseDown) return;
     if (holdingPiece) {
@@ -115,8 +115,8 @@ export function handleMouseUp({
     setHoldingPiece,
     prevPiece,
     setPrevPiece,
-    SetSTART,
-    SetTARGET,
+    setSTART,
+    setTARGET,
 }: mouseEvent): void {
     setMouseDown(false);
     if (holdingPiece) {
@@ -125,9 +125,9 @@ export function handleMouseUp({
             y: i,
         };
         if (holdingPiece === OBJECT.START) {
-            if (SetSTART) SetSTART(spot);
+            if (setSTART) setSTART(spot);
         } else if (holdingPiece === OBJECT.TARGET) {
-            if (SetTARGET) SetTARGET(spot);
+            if (setTARGET) setTARGET(spot);
         }
         setHoldingPiece(null);
         setPrevPiece([-1, -1]);
