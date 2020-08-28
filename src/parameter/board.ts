@@ -1,9 +1,14 @@
-const BOARD_SIZE: { ROW: number; COLUMN: number } = {
-    ROW: 25,
-    COLUMN: 51,
+export interface IBoardSize {
+    ROW: number;
+    COLUMN: number;
+}
+
+const BOARD_SIZE: IBoardSize = {
+    ROW: 20,
+    COLUMN: 37,
 };
 
-const CELL_SIZE: number = 20;
+const CELL_SIZE: number = 30;
 
 const OBJECT: { START: string; TARGET: string } = {
     START: "isStart",
