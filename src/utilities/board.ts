@@ -1,4 +1,4 @@
-import Cell, { ICell } from "./cell";
+import newCell, { ICell } from "./cell";
 
 interface coordinate {
     x: number;
@@ -22,7 +22,7 @@ export function createBoard(
         const tempRow: Array<ICell> = [];
         for (let j = 0; j < BOARD_SIZE.COLUMN; j++) {
             tempRow.push(
-                new Cell(
+                newCell(
                     i,
                     j,
                     i === START.y && j === START.x,
