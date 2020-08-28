@@ -1,23 +1,20 @@
-export default class Cell {
-    isStart: boolean = false;
-    isTarget: boolean = false;
-
-    isVisited: boolean = false;
-    isWall: boolean = false;
-    isPassed: boolean = false;
-
-    row: number;
-    column: number;
-
-    distance: number = Infinity;
-    previous: Cell | null = null;
-
-    constructor(row = 0, column = 0, start = false, target = false) {
-        this.row = row;
-        this.column = column;
-        this.isStart = start;
-        this.isTarget = target;
-    }
+export default function newCell(
+    row: number,
+    column: number,
+    start: boolean,
+    target: boolean
+): ICell {
+    return {
+        isStart: start,
+        isTarget: target,
+        row,
+        column,
+        isVisited: false,
+        isWall: false,
+        isPassed: false,
+        distance: Infinity,
+        previous: null,
+    };
 }
 
 export interface ICell {
@@ -29,5 +26,5 @@ export interface ICell {
     row: number;
     column: number;
     distance: number;
-    previous: Cell | null;
+    previous: ICell | null;
 }
