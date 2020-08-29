@@ -1,6 +1,6 @@
 import { ICell } from "../../utilities/cell";
 import { IBoard } from "../../utilities/board";
-import { IAlgorithmFunction, IAlgorithmResult } from ".";
+import { IAlgorithmFunction, IAlgorithmResult, makeCopyBoard } from ".";
 
 export function Dijkstra({
     board,
@@ -34,20 +34,6 @@ export function Dijkstra({
         updateUnvisitedNeighbors(closestCell, copyBoard);
     }
     return { modifiedBoard: copyBoard, visualizedPath: pathInOrder };
-}
-
-function makeCopyBoard(board: IBoard): IBoard {
-    const copyBoard: IBoard = [];
-    for (let row of board) {
-        const tempRow: ICell[] = [];
-        for (let cell of row) {
-            tempRow.push({
-                ...cell,
-            });
-        }
-        copyBoard.push(tempRow);
-    }
-    return copyBoard;
 }
 
 function updateUnvisitedNeighbors(cell: ICell, board: IBoard): void {
