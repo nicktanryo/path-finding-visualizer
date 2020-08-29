@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, useContext } from "react";
+import classname from "classname";
 import "./Board.css";
 
 // MUI --------------------------------------------------------------
@@ -80,7 +81,7 @@ function Board(): ReactElement {
                                 <div
                                     key={`cell-${indexI}-${indexJ}`}
                                     id={`cell-${indexI}-${indexJ}`}
-                                    className={classes.cell}
+                                    className={classname(classes.cell)}
                                     onMouseDown={() => handleMouseDown(params)}
                                     onMouseUp={() => handleMouseUp(params)}
                                     onMouseEnter={() =>
@@ -89,7 +90,9 @@ function Board(): ReactElement {
                                 >
                                     <div
                                         className={
-                                            cell.isWall ? "background wall" : ""
+                                            cell.isWall
+                                                ? "background wall"
+                                                : "background"
                                         }
                                     >
                                         {cell.isStart ? (
