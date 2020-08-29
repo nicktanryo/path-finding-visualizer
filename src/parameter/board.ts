@@ -3,12 +3,19 @@ export interface IBoardSize {
     COLUMN: number;
 }
 
-const BOARD_SIZE: IBoardSize = {
+// const lg = {
+//     ROW: 30,
+//     COLUMN: 65,
+// };
+
+const md = {
     ROW: 20,
     COLUMN: 37,
 };
 
-const CELL_SIZE: number = 30;
+const BOARD_SIZE: IBoardSize = md;
+
+const CELL_SIZE: number = BOARD_SIZE === md ? 30 : 20;
 
 const OBJECT: { START: string; TARGET: string } = {
     START: "isStart",

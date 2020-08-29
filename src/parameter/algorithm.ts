@@ -1,5 +1,6 @@
 import { Dijkstra } from "../algorithms/path/dijkstra";
 import { IDataString, IDataFunction, func } from ".";
+import { Astar } from "../algorithms/path/astar";
 
 interface IALGORITHM_OPTIONS extends IDataString {
     DIJKSTRA: string;
@@ -17,7 +18,7 @@ const ALGORITHM_OPTIONS: IALGORITHM_OPTIONS = {
 };
 const ALGORITHM: IALGORITHM = {
     DIJKSTRA: Dijkstra as func,
-    ASTAR: Dijkstra as func,
+    ASTAR: Astar as func,
 };
 
 export { ALGORITHM_OPTIONS, ALGORITHM };
