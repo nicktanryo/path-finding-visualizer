@@ -170,7 +170,6 @@ function Index(): ReactElement {
         let { modifiedBoard, visualizedPath }: IAlgorithmResult = pathAlgorithm(
             value
         );
-        console.log(visualizedPath);
         setBoard(modifiedBoard);
         animateBoard(visualizedPath, modifiedBoard);
     }

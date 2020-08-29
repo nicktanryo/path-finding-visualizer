@@ -7,7 +7,6 @@ export function Astar({
     startCell,
     targetCell,
 }: IAlgorithmFunction): IAlgorithmResult {
-    console.log(board, startCell, targetCell);
     const copyBoard = makeCopyBoard(board);
     copyBoard[startCell.row][startCell.column].distance = 0;
     copyBoard[startCell.row][startCell.column].f_astar = manhattanDistance(
