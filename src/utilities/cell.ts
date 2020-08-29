@@ -13,6 +13,7 @@ export default function newCell(
         isWall: false,
         isPassed: false,
         distance: Infinity,
+        f_astar: Infinity,
         previous: null,
     };
 }
@@ -26,5 +27,6 @@ export interface ICell {
     row: number;
     column: number;
     distance: number;
+    f_astar: number;
     previous: ICell | null;
 }
