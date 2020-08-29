@@ -223,8 +223,6 @@ function Index(): ReactElement {
         Start: coordinate;
         Target: coordinate;
     } {
-        console.log(window.outerHeight, window.outerWidth);
-        console.log(window.innerHeight, window.innerWidth);
         const newBoardSize: IBoardSize = {
             ROW: Math.floor((window.innerHeight - 130) / (CELL_SIZE + 1)),
             COLUMN: Math.floor(window.innerWidth / (CELL_SIZE + 2)),
