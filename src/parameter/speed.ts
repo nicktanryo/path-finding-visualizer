@@ -7,9 +7,9 @@ interface ISPEED extends IDataNumber {
 }
 
 const SPEED: ISPEED = {
-    SLOW: 25,
-    NORMAL: 15,
-    FAST: 10,
+    SLOW: 50,
+    NORMAL: 35,
+    FAST: 20,
 };
 
 export { SPEED };
