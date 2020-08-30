@@ -81,30 +81,27 @@ function Board(): ReactElement {
                                 <div
                                     key={`cell-${indexI}-${indexJ}`}
                                     id={`cell-${indexI}-${indexJ}`}
-                                    className={classname(classes.cell)}
+                                    className={classname(
+                                        classes.cell,
+                                        cell.isWall
+                                            ? "background wall"
+                                            : "background"
+                                    )}
                                     onMouseDown={() => handleMouseDown(params)}
                                     onMouseUp={() => handleMouseUp(params)}
                                     onMouseEnter={() =>
                                         handleMouseEnter(params)
                                     }
                                 >
-                                    <div
-                                        className={
-                                            cell.isWall
-                                                ? "background wall"
-                                                : "background"
-                                        }
-                                    >
-                                        {cell.isStart ? (
-                                            <KeyboardArrowRightIcon
-                                                className={classes.svg}
-                                            />
-                                        ) : cell.isTarget ? (
-                                            <ControlCameraIcon
-                                                className={classes.svg}
-                                            />
-                                        ) : null}
-                                    </div>
+                                    {cell.isStart ? (
+                                        <KeyboardArrowRightIcon
+                                            className={classes.svg}
+                                        />
+                                    ) : cell.isTarget ? (
+                                        <ControlCameraIcon
+                                            className={classes.svg}
+                                        />
+                                    ) : null}
                                 </div>
                             );
                         })}
