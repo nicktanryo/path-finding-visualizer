@@ -99,30 +99,33 @@ function Index(): ReactElement {
         createBoard(BOARD_SIZE, start, target)
     );
 
-    function resetRefs() {
+    function resetRefs(boardSize: IBoardSize) {
+        console.log(boardSize.ROW, boardSize.COLUMN);
         for (let row = 0; row < boardSize.ROW; row++) {
             for (let column = 0; column < boardSize.COLUMN; column++) {
-                (boardRef as any).current.children[row].children[
-                    column
-                ].children[0].className = (boardRef as any).current.children[
-                    row
-                ].children[column].children[0].className
-                    .split(" ")
-                    .filter(
-                        (cname: string) =>
-                            cname !== "visited" && cname !== "passed"
-                    )
-                    .join(" ");
+                try {
+                    (boardRef as any).current.querySelector(
+                        `#cell-${row}-${column}`
+                    ).className = (boardRef as any).current
+                        .querySelector(`#cell-${row}-${column}`)
+                        .className.split(" ")
+                        .filter(
+                            (cname: string) =>
+                                cname !== "visited" && cname !== "passed"
+                        )
+                        .join(" ");
+                } catch (err) {}
             }
         }
     }
 
-    function resetBoard() {
+    function resetBoard(): void {
         const { newBoardSize, Start, Target } = getBoardSize();
-        resetRefs();
+        resetRefs(newBoardSize);
         setSTART(Start);
         setTARGET(Target);
         setAnimated(false);
+        setBoardSize(newBoardSize);
         setBoard(createBoard(newBoardSize, Start, Target));
     }
 
@@ -137,7 +140,8 @@ function Index(): ReactElement {
 
     // algorithm visualization process --------------
     function cleanBoard(): IBoard {
-        resetRefs();
+        console.log(boardSize, board.length, board[0].length);
+        resetRefs(boardSize);
         const copyBoard = makeCopyBoard(board);
         const newBoard: IBoard = [];
         for (let row of copyBoard) {
@@ -179,9 +183,9 @@ function Index(): ReactElement {
         for (let i = 0; i < pathLength; i++) {
             const { row, column } = path[i];
             setTimeout(() => {
-                (boardRef as any).current.children[row].children[
-                    column
-                ].children[0].className += " visited";
+                (boardRef as any).current.querySelector(
+                    `#cell-${row}-${column}`
+                ).className += " visited";
             }, speed * i);
         }
         const finalPath = getShortestPath(modifiedBoard, TARGET);
@@ -195,12 +199,11 @@ function Index(): ReactElement {
         for (let i = 0; i < pathLength; i++) {
             const { row, column } = path[i];
             setTimeout(() => {
-                (boardRef as any).current.children[row].children[
-                    column
-                ].children[0].className = (boardRef as any).current.children[
-                    row
-                ].children[column].children[0].className
-                    .split(" ")
+                (boardRef as any).current.querySelector(
+                    `#cell-${row}-${column}`
+                ).className = (boardRef as any).current
+                    .querySelector(`#cell-${row}-${column}`)
+                    .className.split(" ")
                     .map((cname: string) =>
                         cname === "visited" ? "passed" : cname
                     )
@@ -224,7 +227,7 @@ function Index(): ReactElement {
         Target: coordinate;
     } {
         const newBoardSize: IBoardSize = {
-            ROW: Math.floor((window.innerHeight - 130) / (CELL_SIZE + 1)),
+            ROW: Math.floor((window.innerHeight - 120) / (CELL_SIZE + 2)),
             COLUMN: Math.floor(window.innerWidth / (CELL_SIZE + 2)),
         };
 
