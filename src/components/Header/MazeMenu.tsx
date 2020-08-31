@@ -1,15 +1,13 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import { FormControl, Select, MenuItem } from "@material-ui/core";
-import { IMazeContext, MazeContext } from "..";
 import { MAZE_OPTIONS } from "../../parameter/maze";
 import { Capitalized } from ".";
 
 interface Props {
-    generateMaze: () => void;
+    generateMaze: (MAZE_OPTION: string) => void;
 }
 
 function MazeMenu({ generateMaze }: Props): ReactElement {
-    const mazeContext = useContext<IMazeContext>(MazeContext);
     return (
         <>
             <FormControl size="small">
@@ -18,11 +16,7 @@ function MazeMenu({ generateMaze }: Props): ReactElement {
                     value={"DEFAULT"}
                     color="primary"
                     onChange={(event) => {
-                        if (mazeContext.setMaze)
-                            mazeContext.setMaze(
-                                MAZE_OPTIONS[event.target.value as string]
-                            );
-                        generateMaze();
+                        generateMaze(event.target.value as string);
                     }}
                 >
                     <MenuItem value="DEFAULT">Generate Maze</MenuItem>
