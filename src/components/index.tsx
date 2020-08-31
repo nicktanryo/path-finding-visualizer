@@ -248,9 +248,16 @@ function Index(): ReactElement {
         Start: coordinate;
         Target: coordinate;
     } {
+        var chrome = /Chrome/.test(navigator.userAgent);
         const newBoardSize: IBoardSize = {
-            ROW: Math.floor((window.innerHeight - 120) / (CELL_SIZE + 2)),
-            COLUMN: Math.floor(window.innerWidth / (CELL_SIZE + 2)),
+            ROW: Math.floor(
+                (document.documentElement.clientHeight - 120) /
+                    (CELL_SIZE + (chrome ? 2 : 1))
+            ),
+            COLUMN: Math.floor(
+                document.documentElement.clientWidth /
+                    (CELL_SIZE + (chrome ? 2 : 1))
+            ),
         };
 
         const Start: coordinate = {
