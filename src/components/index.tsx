@@ -22,7 +22,7 @@ import {
 } from "../algorithms/path";
 import { ICell } from "../utilities/cell";
 import { makeStyles, Theme } from "@material-ui/core";
-import { MAZE_OPTIONS, MAZE } from "../parameter/maze";
+import { MAZE } from "../parameter/maze";
 
 const useStyles = makeStyles((theme: Theme) => ({
     board: {
@@ -42,15 +42,6 @@ export const SpeedContext = React.createContext<ISpeedContext>({
     setSpeed: undefined,
 });
 
-export interface IMazeContext {
-    maze: string;
-    setMaze: React.Dispatch<React.SetStateAction<string>> | undefined;
-}
-export const MazeContext = React.createContext<IMazeContext>({
-    maze: MAZE_OPTIONS.RANDOM,
-    setMaze: undefined,
-});
-
 export interface IAlgorithmContext {
     algorithm: string;
     setAlgorithm: React.Dispatch<React.SetStateAction<string>> | undefined;
@@ -67,6 +58,7 @@ export interface IBoardContext {
     setSTART: React.Dispatch<React.SetStateAction<coordinate>> | undefined;
     TARGET: coordinate;
     setTARGET: React.Dispatch<React.SetStateAction<coordinate>> | undefined;
+    boardRef: React.MutableRefObject<null> | undefined;
 }
 export const BoardContext = React.createContext<IBoardContext>({
     board: createBoard(BOARD_SIZE, start, target),
@@ -75,6 +67,7 @@ export const BoardContext = React.createContext<IBoardContext>({
     setSTART: undefined,
     TARGET: target,
     setTARGET: undefined,
+    boardRef: undefined,
 });
 
 // -------------------------------------------------------------------------
@@ -85,7 +78,6 @@ function Index(): ReactElement {
 
     // visualization option
     const [speed, setSpeed] = useState<number>(SPEED.NORMAL);
-    const [maze, setMaze] = useState<string>(MAZE_OPTIONS.RANDOM);
     const [algorithm, setAlgorithm] = useState<string>(
         ALGORITHM_OPTIONS.DIJKSTRA
     );
@@ -100,14 +92,13 @@ function Index(): ReactElement {
     );
 
     function resetRefs(boardSize: IBoardSize) {
-        console.log(boardSize.ROW, boardSize.COLUMN);
         for (let row = 0; row < boardSize.ROW; row++) {
             for (let column = 0; column < boardSize.COLUMN; column++) {
                 try {
                     (boardRef as any).current.querySelector(
-                        `#cell-${row}-${column}`
+                        `#cell-${row}-${column}-content`
                     ).className = (boardRef as any).current
-                        .querySelector(`#cell-${row}-${column}`)
+                        .querySelector(`#cell-${row}-${column}-content`)
                         .className.split(" ")
                         .filter(
                             (cname: string) =>
@@ -136,11 +127,11 @@ function Index(): ReactElement {
         setSTART,
         TARGET,
         setTARGET,
+        boardRef,
     };
 
     // algorithm visualization process --------------
     function cleanBoard(): IBoard {
-        console.log(boardSize, board.length, board[0].length);
         resetRefs(boardSize);
         const copyBoard = makeCopyBoard(board);
         const newBoard: IBoard = [];
@@ -184,7 +175,7 @@ function Index(): ReactElement {
             const { row, column } = path[i];
             setTimeout(() => {
                 (boardRef as any).current.querySelector(
-                    `#cell-${row}-${column}`
+                    `#cell-${row}-${column}-content`
                 ).className += " visited";
             }, speed * i);
         }
@@ -200,9 +191,9 @@ function Index(): ReactElement {
             const { row, column } = path[i];
             setTimeout(() => {
                 (boardRef as any).current.querySelector(
-                    `#cell-${row}-${column}`
+                    `#cell-${row}-${column}-content`
                 ).className = (boardRef as any).current
-                    .querySelector(`#cell-${row}-${column}`)
+                    .querySelector(`#cell-${row}-${column}-content`)
                     .className.split(" ")
                     .map((cname: string) =>
                         cname === "visited" ? "passed" : cname
@@ -213,11 +204,42 @@ function Index(): ReactElement {
     }
 
     // maze generation visualization ----------------
-    function generateMaze() {
+    function cleanWalls() {
+        const newBoard: IBoard = [];
+        for (let row of board) {
+            let tempRow: Array<ICell> = [];
+            for (let cell of row) {
+                let newCell: ICell = {
+                    ...cell,
+                    isWall: false,
+                };
+                tempRow.push(newCell);
+            }
+            newBoard.push(tempRow);
+        }
+        setBoard(newBoard);
+    }
+
+    function generateMaze(MAZE_OPTION: string) {
         if (animated) cleanBoard();
-        const mazeOption = MAZE[maze];
-        const { modifiedBoard } = mazeOption(board);
-        setBoard(modifiedBoard);
+        cleanWalls();
+        const mazeOption = MAZE[MAZE_OPTION];
+        const { modifiedBoard, visualizedPath } = mazeOption({
+            board,
+            start: START,
+            target: TARGET,
+        });
+        for (let i = 0; i < visualizedPath.length; i++) {
+            const { row, column } = visualizedPath[i];
+            setTimeout(() => {
+                (boardRef as any).current.querySelector(
+                    `#cell-${row}-${column}-content`
+                ).className += " wall";
+            }, (speed * i) / 20);
+        }
+        setTimeout(() => {
+            setBoard(modifiedBoard);
+        }, (speed * visualizedPath.length) / 20);
     }
 
     // detectinng window size
@@ -258,13 +280,11 @@ function Index(): ReactElement {
             <AlgorithmContext.Provider value={{ algorithm, setAlgorithm }}>
                 <BoardContext.Provider value={boardContextInitValue}>
                     <div>
-                        <MazeContext.Provider value={{ maze, setMaze }}>
-                            <Header
-                                visualize={analyzeBoard}
-                                resetBoard={resetBoard}
-                                generateMaze={generateMaze}
-                            />
-                        </MazeContext.Provider>
+                        <Header
+                            visualize={analyzeBoard}
+                            resetBoard={resetBoard}
+                            generateMaze={generateMaze}
+                        />
                         <div ref={boardRef} className={classes.board}>
                             <Content />
                         </div>
