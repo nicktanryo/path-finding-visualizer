@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
     visualize: () => void;
     resetBoard: () => void;
-    generateMaze: () => void;
+    generateMaze: (MAZE_OPTION: string) => void;
 }
 
 function Index({ visualize, resetBoard, generateMaze }: Props): ReactElement {
@@ -78,7 +78,7 @@ export default Index;
 
 export function Capitalized(str: string): string {
     return str
-        .split(" ")
+        .split("_")
         .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
         .join(" ");
 }
