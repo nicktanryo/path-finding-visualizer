@@ -44,7 +44,13 @@ function Board(): ReactElement {
     const classes = useStyles();
 
     const boardContext = useContext<IBoardContext>(BoardContext);
-    const { board, setBoard: SetBoard, setSTART, setTARGET } = boardContext;
+    const {
+        board,
+        setBoard: SetBoard,
+        boardRef,
+        setSTART,
+        setTARGET,
+    } = boardContext;
 
     const [mouseDown, setMouseDown] = useState<boolean>(false);
     const [holdingPiece, setHoldingPiece] = useState<string | null>(null);
@@ -76,32 +82,36 @@ function Board(): ReactElement {
                                 setPrevPiece,
                                 setSTART,
                                 setTARGET,
+                                boardRef,
                             };
                             return (
                                 <div
                                     key={`cell-${indexI}-${indexJ}`}
                                     id={`cell-${indexI}-${indexJ}`}
-                                    className={classname(
-                                        classes.cell,
-                                        cell.isWall
-                                            ? "background wall"
-                                            : "background"
-                                    )}
+                                    className={classes.cell}
                                     onMouseDown={() => handleMouseDown(params)}
                                     onMouseUp={() => handleMouseUp(params)}
                                     onMouseEnter={() =>
                                         handleMouseEnter(params)
                                     }
                                 >
-                                    {cell.isStart ? (
-                                        <KeyboardArrowRightIcon
-                                            className={classes.svg}
-                                        />
-                                    ) : cell.isTarget ? (
-                                        <ControlCameraIcon
-                                            className={classes.svg}
-                                        />
-                                    ) : null}
+                                    <div
+                                        id={`cell-${indexI}-${indexJ}-content`}
+                                        className={classname(
+                                            "background",
+                                            cell.isWall && "wall"
+                                        )}
+                                    >
+                                        {cell.isStart ? (
+                                            <KeyboardArrowRightIcon
+                                                className={classes.svg}
+                                            />
+                                        ) : cell.isTarget ? (
+                                            <ControlCameraIcon
+                                                className={classes.svg}
+                                            />
+                                        ) : null}
+                                    </div>
                                 </div>
                             );
                         })}
