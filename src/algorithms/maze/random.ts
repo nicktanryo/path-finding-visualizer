@@ -1,8 +1,9 @@
 import { IAlgorithmResult, makeCopyBoard } from "../path";
 import { IBoard } from "../../utilities/board";
 import { ICell } from "../../utilities/cell";
+import { IMazeInput } from "../../parameter/maze";
 
-export function Random(board: IBoard): IAlgorithmResult {
+export function Random({ board }: IMazeInput): IAlgorithmResult {
     const copyBoard: IBoard = makeCopyBoard(board);
     const path: Array<ICell> = [];
     for (let row of copyBoard) {
