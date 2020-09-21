@@ -249,15 +249,18 @@ function Index(): ReactElement {
         Target: coordinate;
     } {
         var chrome = /Chrome/.test(navigator.userAgent);
+        var height = chrome
+            ? document.documentElement.clientHeight
+            : window.innerHeight;
+        var width = chrome
+            ? document.documentElement.clientWidth
+            : window.innerWidth;
+
+        var headerOffset = width <= 672 ? 140 : width <= 792 ? 120 : 100;
+
         const newBoardSize: IBoardSize = {
-            ROW: Math.floor(
-                (document.documentElement.clientHeight - 120) /
-                    (CELL_SIZE + (chrome ? 2 : 1))
-            ),
-            COLUMN: Math.floor(
-                document.documentElement.clientWidth /
-                    (CELL_SIZE + (chrome ? 2 : 1))
-            ),
+            ROW: Math.floor((height - headerOffset) / (CELL_SIZE + 2)),
+            COLUMN: Math.floor(width / (CELL_SIZE + 2)),
         };
 
         const Start: coordinate = {
