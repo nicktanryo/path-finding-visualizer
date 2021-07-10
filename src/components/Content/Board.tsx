@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     cell: {
         width: `${CELL_SIZE}px`,
         height: `${CELL_SIZE}px`,
-        border: ".5px solid lightblue",
+        border: ".5px solid black",
     },
     svg: {
         width: "100%",
@@ -57,7 +57,7 @@ function Board(): ReactElement {
     const [prevPiece, setPrevPiece] = useState<Array<number>>([-1, -1]);
 
     return (
-        <>
+        <div style={{border: ".5px solid black"}}>
             {board.map((row: Array<ICell>, indexI: number) => {
                 return (
                     <div
@@ -118,7 +118,7 @@ function Board(): ReactElement {
                     </div>
                 );
             })}
-        </>
+        </div>
     );
 }
 

@@ -16,6 +16,7 @@ export interface mouseEvent {
     setPrevPiece: React.Dispatch<React.SetStateAction<Array<number>>>;
     setSTART?: React.Dispatch<React.SetStateAction<coordinate>>;
     setTARGET?: React.Dispatch<React.SetStateAction<coordinate>>;
+    boardRef: React.MutableRefObject<null> | undefined;
 }
 
 function toggleWall(board: IBoard, i: number, j: number): IBoard {
@@ -29,6 +30,34 @@ function toggleWall(board: IBoard, i: number, j: number): IBoard {
         return tempBoard;
     });
 }
+// function toggleWallRef(
+//     boardRef: React.MutableRefObject<null> | undefined,
+//     i: number,
+//     j: number
+// ): void {
+//     const currentClassName = (boardRef as any).current
+//         .querySelector(`#cell-${i}-${j}-content`)
+//         .className.split(" ");
+//     if (currentClassName.includes("wall")) {
+//         (boardRef as any).current.querySelector(
+//             `#cell-${i}-${j}-content`
+//         ).className = currentClassName
+//             .filter((cname: string) => cname !== "wall")
+//             .filter(
+//                 (cname: string) => cname !== "visited" && cname !== "passed"
+//             )
+//             .join(" ");
+//     } else {
+//         (boardRef as any).current.querySelector(
+//             `#cell-${i}-${j}-content`
+//         ).className =
+//             currentClassName
+//                 .filter(
+//                     (cname: string) => cname !== "visited" && cname !== "passed"
+//                 )
+//                 .join(" ") + " wall";
+//     }
+// }
 function movePiece(
     board: IBoard,
     i: number,
@@ -61,6 +90,7 @@ export function handleMouseDown({
     setPrevPiece,
     setSTART,
     setTARGET,
+    boardRef,
 }: mouseEvent): void {
     setMouseDown(true);
     const { isStart, isTarget } = board[i][j];
@@ -68,6 +98,7 @@ export function handleMouseDown({
         setHoldingPiece(isStart ? OBJECT.START : OBJECT.TARGET);
         setPrevPiece([i, j]);
     } else {
+        // toggleWallRef(boardRef, i, j);
         setBoard(toggleWall(board, i, j));
     }
 }
@@ -85,6 +116,7 @@ export function handleMouseEnter({
     setPrevPiece,
     setSTART,
     setTARGET,
+    boardRef,
 }: mouseEvent) {
     if (!mouseDown) return;
     if (holdingPiece) {
@@ -100,6 +132,7 @@ export function handleMouseEnter({
         }
     } else {
         if (board[i][j].isStart || board[i][j].isTarget) return;
+        // toggleWallRef(boardRef, i, j);
         setBoard(toggleWall(board, i, j));
     }
 }
@@ -117,6 +150,7 @@ export function handleMouseUp({
     setPrevPiece,
     setSTART,
     setTARGET,
+    boardRef,
 }: mouseEvent): void {
     setMouseDown(false);
     if (holdingPiece) {
